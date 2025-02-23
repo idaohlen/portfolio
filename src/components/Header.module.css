@@ -1,0 +1,17 @@
+.header {
+
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2rem;
+  gap: 1rem;
+}
+
+.nav a {
+  color: white;
+  padding: .4rem 1rem;
+  border: 1px solid white;
+  border-radius: 10rem;
+}
