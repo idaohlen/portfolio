@@ -1,10 +1,13 @@
 import './App.css'
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
-import Home from './pages/Home'
-import About from './pages/About'
-import Header from './components/Header'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Home from '@/pages/Home'
+import About from '@/pages/About'
+import Header from '@/components/Header'
+
+import config from '@/config'
 
 export default function App() {
+  document.title = config.pageTitle
 
   return (
     <Router>
