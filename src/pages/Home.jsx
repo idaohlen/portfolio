@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import styled from 'styled-components'
 import { motion } from 'motion/react'
 import { Icon } from '@iconify/react'
+import config from '@/config'
 
 export default function Home() {
 
@@ -14,8 +16,9 @@ export default function Home() {
       <h1 className='text-4xl font-kumar-one text-white'>Ida Öhlén</h1>
       <p className='text-2xl text-yellow-400'>Fullstack Developer</p>
       <div className='flex flex-row justify-center text-4xl'>
-        <Icon icon='mdi:linkedin'/>
-        <Icon icon='mdi:github'/>
+        {Object.values(config.contactLinks).map(link =>
+          <Icon icon={link.icon} key={link.title} />
+        )}
       </div>
     </motion.div>
   )

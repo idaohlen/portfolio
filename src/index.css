@@ -7,8 +7,8 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-  background: linear-gradient(145deg, #EF4C4C, #9434BE);
+  background-color: #11142E;
+  background: linear-gradient(145deg, #11142E, #272751) fixed;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -37,11 +37,32 @@ a {
   }
 }
 
-
+p {
+  margin-block: 1rem;
+}
 
 h1 {
   font-size: 3.2em;
+  font-weight: 600;
   line-height: 1.1;
+  text-transform: uppercase;
+}
+
+h2 {
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    background-color: #9434BE;
+    background: linear-gradient(145deg, #EF4C4C, #9434BE);
+  }
+  a:hover {
+    color: #747bff;
+  }
 }
 
 .font-kumar-one {
@@ -50,15 +71,10 @@ h1 {
   font-style: normal;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.page {
+  margin: 0 auto;
+  margin-top: 6rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 640px;
 }
