@@ -1,23 +1,21 @@
 import './App.css'
-import { useState } from 'react'
-import { motion } from 'motion/react'
-import { Icon } from '@iconify/react'
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
 
 function App() {
 
   return (
-    <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 2 }}
-  >
-      <h1 className='text-4xl'>Ida Öhlén</h1>
-      <p className='2xl'>Fullstack Developer</p>
-      <div className='flex flex-row justify-center text-4xl'>
-        <Icon icon='mdi:linkedin'/>
-        <Icon icon='mdi:github'/>
-      </div>
-    </motion.div>
+    <Router>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
   )
 }
 
