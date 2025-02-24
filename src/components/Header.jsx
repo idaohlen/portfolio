@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const SiteHeader = styled.header`
-  position: absolute;
+  position: sticky;
   left: 0;
   right: 0;
 `
@@ -17,6 +17,11 @@ const Nav = styled.nav`
     padding: .4rem 1rem;
     border: 1px solid white;
     border-radius: 10rem;
+    text-decoration: none;
+
+    &:hover {
+      background: #ffffff2a;
+    }
   }
 `
 

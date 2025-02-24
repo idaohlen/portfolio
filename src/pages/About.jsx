@@ -3,6 +3,8 @@ import ExperienceList from '@/components/ExperienceList'
 import Divider from '../components/Divider'
 import { Icon } from '@iconify/react'
 
+import PageTransition from '../components/PageTransition'
+
 export default function About() {
   document.title = config.pageTitle + ' - About'
 
@@ -49,19 +51,21 @@ export default function About() {
   ]
 
   return (
-    <div className='page'>
-      <h1>About me</h1>
-      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis sapiente ab provident dolorem fuga velit molestiae nemo necessitatibus maiores mollitia, quibusdam iste nulla, eveniet quis numquam quaerat. Vero, fugit itaque!</p>
+    <PageTransition>
+      <div className='page'>
+        <h1>About me</h1>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis sapiente ab provident dolorem fuga velit molestiae nemo necessitatibus maiores mollitia, quibusdam iste nulla, eveniet quis numquam quaerat. Vero, fugit itaque!</p>
 
-      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis sapiente ab provident dolorem fuga velit molestiae nemo necessitatibus maiores mollitia, quibusdam iste nulla, eveniet quis numquam quaerat. Vero, fugit itaque!</p>
-   
-      <h2><Icon icon="material-symbols:diamond"/> Education</h2>
-      <ExperienceList items={education} />
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis sapiente ab provident dolorem fuga velit molestiae nemo necessitatibus maiores mollitia, quibusdam iste nulla, eveniet quis numquam quaerat. Vero, fugit itaque!</p>
+    
+        <h2>Education</h2>
+        <ExperienceList items={education} />
 
-      <Divider />
+        <Divider />
 
-      <h2>Work experience</h2>
-      <ExperienceList items={work} />
-    </div>
+        <h2>Work experience</h2>
+        <ExperienceList items={work} />
+      </div>
+    </PageTransition>
   )
 }

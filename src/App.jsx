@@ -1,5 +1,5 @@
-import './App.css'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'motion/react'
 
 import Home from '@/pages/Home'
 import About from '@/pages/About'
@@ -12,16 +12,19 @@ import config from '@/config'
 
 export default function App() {
   document.title = config.pageTitle
+  const location = useLocation()
 
   return (
-    <Router>
+    <>
       <Header />
-      <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-      </Routes>
+      <AnimatePresence mode='wait'>
+        <Routes location={location} key={location.pathname}>
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/projects' element={<Projects />} />
+        </Routes>
+      </AnimatePresence>
       <Footer />
-    </Router>
+    </>
   )
 }
