@@ -2,7 +2,7 @@ import ProjectList from '@/components/ProjectList'
 import PageTransition from '@/components/PageTransition'
 import schoolProjects from '@/data/school-projects.js'
 
-export default function Projects() {
+export default function Page() {
 
   return (
     <PageTransition>

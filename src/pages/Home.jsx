@@ -5,7 +5,7 @@ import config from '@/config'
 import PageTransition from '../components/PageTransition'
 
 
-export default function Home() {
+export default function Page() {
 
   return (
     <PageTransition>

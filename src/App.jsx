@@ -4,6 +4,7 @@ import { AnimatePresence } from 'motion/react'
 import Home from '@/pages/Home'
 import About from '@/pages/About'
 import Projects from './pages/Projects'
+import Skills from './pages/Skills'
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -21,6 +22,7 @@ export default function App() {
         <Routes location={location} key={location.pathname}>
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
+          <Route path='/skills' element={<Skills />} />
           <Route path='/projects' element={<Projects />} />
         </Routes>
       </AnimatePresence>

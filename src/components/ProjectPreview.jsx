@@ -3,8 +3,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  Button
 } from "@heroui/react";
 
 
