@@ -38,7 +38,7 @@ const links = [
   {
     label: 'Projects',
     path: '/projects',
-    icon: 'stash:folder'
+    icon: 'ion:code-slash'
   }
 ]
 
