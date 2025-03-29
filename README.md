@@ -1,7 +1,9 @@
-# Portfolio - Ida Öhlén
+# Personal Portfolio - Ida Öhlén
 
+
+## This project is built using:
 - Vite
 - React 19
 - Tailwind CSS
-- Iconify/react
+- Iconify/React
 - Motion

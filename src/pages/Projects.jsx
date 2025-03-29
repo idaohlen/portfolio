@@ -2,8 +2,8 @@ import { Tabs, Tab } from '@heroui/react'
 import ProjectList from '@/components/ProjectList'
 import PageTransition from '@/components/PageTransition'
 import PageTitle from '@/components/PageTitle'
-import schoolProjects from '@/data/school-projects.js'
-import games from '@/data/games.js'
+import schoolProjects from '@/data/projects/school-work.js'
+import games from '@/data/projects/games.js'
 
 export default function Page() {
 

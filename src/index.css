@@ -11,7 +11,6 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #11142E;
   background: linear-gradient(145deg, #11142E, #272751) fixed;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -73,7 +72,7 @@ h2 {
 @media (prefers-color-scheme: light) {
   :root {
     background-color: #9434BE;
-    background: linear-gradient(145deg, #EF4C4C, #9434BE);
+    background: linear-gradient(145deg, #EF4C4C, #9434BE) fixed;
   }
 }
 
@@ -90,4 +89,10 @@ h2 {
   width: 100%;
   flex: 1 1;
   max-width: 640px;
+}
+
+.accordion h2 {
+  padding-top: 0;
+  margin-bottom: 0;
+  color: white;
 }

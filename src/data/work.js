@@ -2,7 +2,7 @@ export default [
   {
     "title": "Graphic Designer",
     "place": "Freelance",
-    "location": "Sweden",
+    "location": "",
     "date": "2007 - current"
   },
   {
