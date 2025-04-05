@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { Chip, Tooltip, Pagination } from '@heroui/react'
 import ProjectPreview from '@/components/ProjectPreview'
 import IconButton from '@/components/IconButton'
@@ -20,6 +20,10 @@ export default function ProjectList({projects}) {
   const indexOfLastProject = currentPage * projectsPerPage
   const indexOfFirstProject = indexOfLastProject - projectsPerPage
   const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [projects])
 
   useEffect(() => {
     function handleResize() {
@@ -64,7 +68,6 @@ export default function ProjectList({projects}) {
 
   return (
     <div className='flex flex-col gap-2'>
-      <AnimatePresence mode="wait">
         {currentProjects.map((project, index) => {
           const card = (
             <Card
@@ -72,7 +75,6 @@ export default function ProjectList({projects}) {
               key={`project-${project.title}-${index}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               transition={{ 
                 duration: 0.6,
                 delay: index * 0.15, 
@@ -81,8 +83,8 @@ export default function ProjectList({projects}) {
             >
               <div className='flex align-top gap-1 mb-1'>
                 <Title>{project.title}</Title>
-                <IconButton icon='mdi:github' textColor='white' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} />
-                <IconButton icon='material-symbols:search-rounded' textColor='white' label='Preview' onPress={() => handleRedirect(project.previewUrl)} />
+                { project.repoUrl && <IconButton icon='mdi:github' textColor='white' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} /> }
+                { project.previewUrl && <IconButton icon='material-symbols:search-rounded' textColor='white' label='Preview' onPress={() => handleRedirect(project.previewUrl)} /> }
               </div>
               <div className='text-sm'>{project.tagline}</div>
               <div className='flex gap-2 mt-3 text-ellipsis overflow-hidden'>
@@ -93,7 +95,6 @@ export default function ProjectList({projects}) {
           
           return wrapWithTooltip(card, project);
         })}
-      </AnimatePresence>
 
       {/* Pagination Component - Only show if more than one page */}
       {totalPages > 1 && (

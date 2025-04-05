@@ -28,7 +28,6 @@ body {
   flex-direction: column;
 }
 
-
 #root {
   flex: 1 1 100%;
   display: flex;
@@ -84,8 +83,8 @@ h2 {
 
 .page {
   margin: 0 auto;
-  margin-top: 0;
   padding: 2rem;
+  padding-top: 4rem;
   width: 100%;
   flex: 1 1;
   max-width: 640px;

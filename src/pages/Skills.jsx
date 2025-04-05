@@ -35,12 +35,6 @@ export default function Page() {
     { label: 'Aseprite', info: '' },
   ]
 
-  const gameDev = [
-    { label: 'Unity', info: '' },
-    { label: 'Twine', info: '' },
-    { label: 'Ren\'Py', info: '' },
-  ]
-
   return (
     <PageTransition>
       <div className='page'>
@@ -62,19 +56,6 @@ export default function Page() {
         <h2>Graphic design / Illustration</h2>
         <div className="flex flex-wrap gap-2">
           { graphicDesign.map(item =>
-            <Chip
-              variant='flat'
-              className='bg-white/20 text-white'
-              key={item.label}>{item.label}
-            </Chip>
-          )}
-        </div>
-
-        <Divider />
-
-        <h2>Game development</h2>
-        <div className="flex flex-wrap gap-2">
-          { gameDev.map(item =>
             <Chip
               variant='flat'
               className='bg-white/20 text-white'

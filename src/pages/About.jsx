@@ -56,10 +56,6 @@ export default function Page() {
           </AccordionItem>
         </Accordion>
 
-        <Divider />
-
-        <h2>More about me</h2>
-
       </div>
     </PageTransition>
   )

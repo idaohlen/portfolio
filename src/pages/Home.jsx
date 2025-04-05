@@ -8,8 +8,8 @@ export default function Page() {
   return (
     <PageTransition>
       <div className='page flex flex-col items-center justify-center'>
-        <h1 className='text-5xl font-kumar-one text-white'>Ida Öhlén</h1>
-        <p className='text-2xl text-yellow-400'>Web Developer</p>
+        <h1 className='text-5xl text-center font-kumar-one text-white'>Ida Öhlén</h1>
+        <p className='text-2xl text-center text-yellow-400'>Fullstack Web Developer</p>
         <div className='flex flex-row justify-center text-4xl'>
           {Object.values(config.contactLinks).map(link =>
             <IconButton

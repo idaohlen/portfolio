@@ -2,13 +2,23 @@ export default [
   {
     title: 'Jobchaser',
     year: '2025',
-    tagline: 'An assignment to create a job searching app using Next.js with a component library.',
+    tagline: 'An assignment to create a job searching app using React and Next.js with a component library.',
     repoUrl: 'https://github.com/idaohlen/u07-jobchaser',
     previewUrl: 'https://u07-jobchaser.vercel.app/',
     description: `
-      <p></p>
+      <p>The main feature of the Jobchaser app is browsing a list of jobs and being able to filter them by different queries. The page features a toggleable dark mode, and has a bookmarks feature.</p>
+      <p>This project was my first introduction into working with <b>React</b>, along with <b>Next.js</b>. We were also assigned to work with a component library of our choice. As I have prior experience working with <b>Vue.js</b> the concepts of a JavaScript framework was not unfamiliar to me, but it took some effort to translating my existing Vue knowledge into React concepts. There are some similarities, but a lot of differences as well, but once I got the basics cleared up and learn to "think in React" I now feel quite comfortable working with both frameworks.</p>
+      <p>I explored a couple of different React component libraries and settled on <a href="https://www.heroui.com" target="_blank">HeroUI</a>, as it had a sleek and modern design that I enjoyed, and was easy to work with once I got it set up. I've worked with component libraries before, and although I quite enjoy manual styling with CSS I can appreciate using component libraries to get up and running quicker and not have to code and design every single thing from scratch.</p>
+      <p>Job data is fetched from the <a href="https://remotive.com" target="_blank">Remotive</a> API, as well as the following libraries:</p>
+      <ul>
+        <li><b>Redux Toolkit</b> for state management</li>
+        <li><b>react-hook-form</b> for handling forms</li>
+        <li><b>framer-motion</b> for animations and page transitions</li>
+        <li><b>DOMPurify</b> to be extra safe when rendering HTML from a third party source</li>
+        <li><b>date-fns</b> for natural language date formatting</li>
+      </ul>
     `,
-    tags: ['HTML', 'CSS', 'TypeScript', 'Next.js'],
+    tags: ['HTML', 'CSS', 'TypeScript', 'React', 'Next.js'],
     images: [
       'jobchaser__00.png',
       'jobchaser__01.png',
@@ -25,8 +35,9 @@ export default [
     repoUrl: 'https://github.com/idaohlen/u05-todolist-typescript',
     previewUrl: 'https://idaohlen-todolist-typescript-local.netlify.app',
     description: `
-      <p></p>
-    `,
+      <p>This was my first real project working with TypeScript. Todolists aren't always that exciting, so I tried to implement some additional features like adding categories and date filters and create a fun and colorful design.</p>
+      <p>The preview link is for a local storage version of the todolist, but it was originally built to sync with a <b>Supabase</b> database and included a user registration and login system. That code is featured in the repo, but as I cannot guarantee the availability of the Supabase database I've converted the todolist into a locally functioning version as well.</p>
+      `,
     tags: ['HTML', 'CSS', 'TypeScript'],
     images: [
       'todolist-typescript__00.png',

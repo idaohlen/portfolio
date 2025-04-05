@@ -95,7 +95,7 @@ export default function ImageSlideshow({
             {[...Array(totalPages)].map((_, index) => (
               <PageIndicator 
                 key={index}
-                active={index === currentPage}
+                $active={index === currentPage}
                 onClick={(e) => {
                   e.stopPropagation()
                   setCurrentPage(index)
@@ -229,13 +229,13 @@ const PageIndicator = styled.button`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: ${props => props.active ? 'white' : 'rgba(255, 255, 255, 0.5)'};
+  background: ${props => props.$active ? 'white' : 'rgba(255, 255, 255, 0.5)'};
   border: none;
   cursor: pointer;
   transition: all 0.3s;
   
   &:hover {
-    background: ${props => props.active ? 'white' : 'rgba(255, 255, 255, 0.8)'};
+    background: ${props => props.$active ? 'white' : 'rgba(255, 255, 255, 0.8)'};
   }
 `
 

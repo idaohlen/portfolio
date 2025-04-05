@@ -1,37 +1,110 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import tw from 'twin.macro'
 import styled from 'styled-components'
 import { Icon } from '@iconify/react'
+import { motion, AnimatePresence } from 'motion/react'
 
 export default function Header() {
   const location = useLocation()
   const [scrolled, setScrolled] = useState(false)
+  const [isNavOpen, setIsNavOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 480)
+
+  function toggleNav() {
+    setIsNavOpen(!isNavOpen)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
       // Add 'scrolled' class when page is scrolled down
-      const isScrolled = window.scrollY > 20;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
+      const isScrolled = window.scrollY > 10
+      if (isScrolled !== scrolled) setScrolled(isScrolled)
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll)
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [scrolled])
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 480
+      setIsMobile(mobile)
+
+      if (!mobile) setIsNavOpen(true)
+    }
+
+    handleResize();
+    
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
-    <SiteHeader className={scrolled ? 'scrolled' : ''}>
-      <Nav>
-        { links.map(link => (
-          <Link to={link.path} key={link.label} className={`flex items-center gap-1 ${location.pathname === link.path ? 'active' : ''}`}>
-            <Icon icon={link.icon}  />
-            <div>{link.label}</div>
-          </Link>
-        )) }
-      </Nav>
+    <SiteHeader className={scrolled && isNavOpen ? 'scrolled' : ''}>
+      <ToggleMenu onClick={toggleNav}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={isNavOpen ? 'close' : 'menu'}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Icon 
+              fontSize="32px" 
+              icon={isNavOpen 
+                ? "iconamoon:close-thin" 
+                : "iconamoon:menu-burger-horizontal-thin"
+              } 
+            />
+          </motion.div>
+        </AnimatePresence>
+      </ToggleMenu>
+
+      <AnimatePresence>
+      {(isNavOpen || !isMobile) && (
+        <Nav
+          className='flex-col xs:flex-row'
+          $isOpen={isNavOpen}
+          as={motion.nav}
+          initial={isMobile ? { opacity: 0, height: 0 } : { opacity: 1 }}
+          animate={{ 
+            opacity: 1, 
+            height: 'auto',
+            transition: {
+              height: { duration: 0.3 }
+            }
+          }}
+          exit={isMobile ? { 
+            opacity: 0, 
+            height: 0,
+            transition: {
+              height: { duration: 0.3 }
+            }
+          } : { opacity: 1 }}
+          transition={{ 
+            duration: 0.3, 
+            ease: "easeOut"
+          }}
+        >
+          { links.map(link => (
+            <Link
+              to={link.path}
+              key={link.label}
+              className={`flex items-center gap-1 ${location.pathname === link.path ? 'active' : ''}`}
+            >
+              <Icon icon={link.icon}  />
+              <div>{link.label}</div>
+            </Link>
+          )) }
+        </Nav>
+        )}
+      </AnimatePresence>
     </SiteHeader>
   )
 }
@@ -69,12 +142,12 @@ const SiteHeader = styled.header`
 
   &.scrolled {
     &::before {
+      ${tw`h-[250px] xs:h-[120px]`};
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 120px;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       mask-image: linear-gradient(to bottom, 
@@ -96,10 +169,20 @@ const SiteHeader = styled.header`
 const Nav = styled.nav`
   display: flex;
   justify-content: flex-end;
+  align-items: flex-start;
   margin: 2rem;
+  margin-bottom: 0;
   gap: .2rem;
-  font-size: .9rem;
+
+  // Mobile nav styling
+  @media (max-width: 479px) {
+    opacity: ${props => props.$isOpen ? '1' : '0'};
+    pointer-events: ${props => props.$isOpen ? 'auto' : 'none'};
+  }
+
   a {
+    display: flex;
+    justify-content: center;
     color: white;
     padding: .4rem 1rem;
     border: 1px solid #ffffff83;
@@ -140,5 +223,23 @@ const Nav = styled.nav`
       border-color: var(--color);
       background: rgba(137, 198, 255, .3);
     }
+  }
+`
+
+const ToggleMenu = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  opacity: .8;
+  transition: all .3s;
+  ${tw`xs:hidden`};
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+    scale: 1.2;
   }
 `

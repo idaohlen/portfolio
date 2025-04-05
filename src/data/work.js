@@ -7,14 +7,20 @@ export default [
   },
   {
     "title": "Service administrator & kitchen assistant",
-    "place": "Hotel & Restaurant",
+    "place": "Lövstabruks Värdshus",
     "location": "Tierp, Sweden",
     "date": "2022 - 2023"
   },
   {
     "title": "Assistant",
-    "place": "National Library of Sweden",
+    "place": "Kungliga Biblioteket (National Library of Sweden)",
     "location": "Bålsta, Sweden",
     "date": "2021"
+  },
+  {
+    "title": "Dog caretaker",
+    "place": "Villa Vovve",
+    "location": "Bålsta, Sweden",
+    "date": "2016 - 2018"
   }
 ]

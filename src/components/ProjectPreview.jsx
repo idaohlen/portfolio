@@ -21,8 +21,8 @@ export default function ProjectPreview({project, isOpen, onOpen, onClose}) {
         <ModalContent>
           <ModalHeader className='flex items-center gap-1'>
             <div className='mr-auto'>{project.title}</div>
-            <IconButton icon='mdi:github' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} />
-            <IconButton icon='material-symbols:search-rounded' label='Preview' onPress={() => handleRedirect(project.previewUrl)} />
+            { project.repoUrl && <IconButton icon='mdi:github' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} /> }
+            { project.previewUrl && <IconButton icon='material-symbols:search-rounded' label='Preview' onPress={() => handleRedirect(project.previewUrl)} /> }
           </ModalHeader>
           <ModalBody>
             <Text>
@@ -41,9 +41,11 @@ export default function ProjectPreview({project, isOpen, onOpen, onClose}) {
             </Text>
           </ModalBody>
           <ModalFooter>
-            <div className='flex gap-2 mr-auto'>
-              { project.tags.map(tag => <Chip key={tag}>{tag}</Chip>) }
-            </div>
+            <FadeScrollContainer>
+              <TagsContainer>
+                { project.tags.map(tag => <Chip key={tag}>{tag}</Chip>) }
+              </TagsContainer>
+            </FadeScrollContainer>
             <Button color="danger" variant="light" onPress={onClose}>
               Close
             </Button>
@@ -76,3 +78,36 @@ const Text = styled.div`
     margin-bottom: 0.25rem;
   }
 `
+
+const FadeScrollContainer = styled.div`
+  position: relative;
+  width: 100%;
+  margin-right: auto;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to left, white, transparent);
+  }
+`
+
+const TagsContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
