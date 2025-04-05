@@ -36,16 +36,15 @@ export default function ProjectPreview({project, isOpen, onOpen, onClose}) {
                 />
               )}
 
+              <div className='flex flex-wrap gap-2'>
+                { project.tags.map(tag => <Chip key={tag}>{tag}</Chip>) }
+              </div>
+
               <Divider className='my-6' />
               <p dangerouslySetInnerHTML={{ __html: project.description }} />
             </Text>
           </ModalBody>
           <ModalFooter>
-            <FadeScrollContainer>
-              <TagsContainer>
-                { project.tags.map(tag => <Chip key={tag}>{tag}</Chip>) }
-              </TagsContainer>
-            </FadeScrollContainer>
             <Button color="danger" variant="light" onPress={onClose}>
               Close
             </Button>
@@ -78,36 +77,3 @@ const Text = styled.div`
     margin-bottom: 0.25rem;
   }
 `
-
-const FadeScrollContainer = styled.div`
-  position: relative;
-  width: 100%;
-  margin-right: auto;
-  overflow: hidden;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 30px;
-    z-index: 2;
-    pointer-events: none;
-    background: linear-gradient(to left, white, transparent);
-  }
-`
-
-const TagsContainer = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
