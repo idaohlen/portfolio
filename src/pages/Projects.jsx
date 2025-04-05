@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useFilter } from '@react-aria/i18n'
 import { Tabs, Tab, Autocomplete, AutocompleteItem } from '@heroui/react'
+import config from '@/config'
 import ProjectList from '@/components/ProjectList'
 import PageTransition from '@/components/PageTransition'
 import PageTitle from '@/components/PageTitle'
@@ -9,6 +10,8 @@ import personalProjects from '@/data/projects/personal.js'
 import otherProjects from '@/data/projects/other.js'
 
 export default function Page() {
+  document.title = config.pageTitle + ' - Projects'
+
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedTag, setSelectedTag] = useState(null)
   const [inputValue, setInputValue] = useState('')

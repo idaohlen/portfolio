@@ -1,9 +1,11 @@
 import { Chip } from '@heroui/react'
+import config from '@/config'
 import PageTransition from '@/components/PageTransition'
 import Divider from '@/components/Divider'
 import PageTitle from '@/components/PageTitle'
 
 export default function Page() {
+  document.title = config.pageTitle + ' - Skills'
 
   const webDev = [
     { label: 'HTML', info: '' },
