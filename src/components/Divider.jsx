@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 
 const Hr = styled.hr`
+  width: 100%;
   color: white;
   opacity: .3;
   margin-block: 2rem;

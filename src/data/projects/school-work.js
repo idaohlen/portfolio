@@ -1,5 +1,6 @@
 export default [
   {
+    id: '6',
     title: 'Jobchaser',
     year: '2025',
     tagline: 'An assignment to create a job searching app using React and Next.js with a component library.',
@@ -29,6 +30,7 @@ export default [
     ]
   },
   {
+    id: '5',
     title: 'Todolist in TypeScript',
     year: '2025',
     tagline: 'This todolist project was our first introduction to working with TypeScript.',
@@ -46,6 +48,7 @@ export default [
     ]
   },
   {
+    id: '4',
     title: 'Webshop',
     year: '2024',
     tagline: 'A simple webshop interface that gets data from a third party API and implements Google Analytics.',
@@ -58,6 +61,7 @@ export default [
     images: ['webshop-fetch__00.png']
   },
   {
+    id: '3',
     title: 'Quiz App',
     year: '2024',
     tagline: 'Our first assignment where we got to work in a team of multiple students was to create a quiz app using HTML, CSS and JavaScript.',
@@ -84,6 +88,7 @@ export default [
     ]
   },
   {
+    id: '2',
     title: 'Personal Portfolio Page',
     year: '2024',
     tagline: `Moving on from learning the basics of HTML and CSS and stepping into the bigger world of JavaScript, we were assigned to design our own portfolio pages and utilize JavaScript in a couple of different ways.`,
@@ -111,6 +116,7 @@ export default [
     ]
   },
   {
+    id: '1',
     title: 'Code a Figma Design',
     year: '2024',
     tagline: 'Our first assignment was to code a portfolio site using HTML and CSS based on a Figma design.',

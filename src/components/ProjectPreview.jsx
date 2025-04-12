@@ -31,7 +31,7 @@ export default function ProjectPreview({project, isOpen, onOpen, onClose}) {
               {project.images && project.images.length > 0 && (
                 <ImageSlideshow
                   images={project.images}
-                  imageFolder='/images/projects/'
+                  imageFolder='/images/projects/min/'
                   height={120}
                 />
               )}

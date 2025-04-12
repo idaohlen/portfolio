@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useFilter } from '@react-aria/i18n'
 import { Tabs, Tab, Autocomplete, AutocompleteItem } from '@heroui/react'
 import config from '@/config'
@@ -8,23 +8,27 @@ import PageTitle from '@/components/PageTitle'
 import schoolProjects from '@/data/projects/school-work.js'
 import personalProjects from '@/data/projects/personal.js'
 import otherProjects from '@/data/projects/other.js'
+import { featuredProjects } from '@/data/projects/featured.js'
 
 export default function Page() {
   document.title = config.pageTitle + ' - Projects'
 
-  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState('featured')
   const [selectedTag, setSelectedTag] = useState(null)
   const [inputValue, setInputValue] = useState('')
   const [availableTags, setAvailableTags] = useState([])
   const { startsWith } = useFilter({ sensitivity: 'base' })
 
+  const featured = useMemo(() => featuredProjects(6).map(project => ({ ...project, category: 'featured' })), [])
+
   const allProjects = useMemo(() => {
     return [
       ...schoolProjects.map(project => ({ ...project, category: 'school' })),
       ...personalProjects.map(project => ({ ...project, category: 'personal' })),
-      ...otherProjects.map(project => ({ ...project, category: 'other' }))
+      ...otherProjects.map(project => ({ ...project, category: 'other' })),
+      ...featured
     ]
-  }, [])
+  }, [featured])
 
   // Extract all unique tags from projects
   const allTags = useMemo(() => {
@@ -43,7 +47,7 @@ export default function Page() {
   }, [allProjects])
 
   // Initialize available tags
-  useMemo(() => {
+  useEffect(() => {
     setAvailableTags(allTags)
   }, [allTags])
 
@@ -51,9 +55,34 @@ export default function Page() {
   const filteredProjects = useMemo(() => {
     let projects = allProjects
     
+    // Exclude featured projects when "All" is selected
+    if (selectedCategory === 'all') {
+      const uniqueProjects = new Map();
+
+      // Add all non-featured projects first
+      allProjects
+        .filter(project => project.category !== 'featured')
+        .forEach(project => {
+          uniqueProjects.set(project.title, project);
+        });
+    
+      // Then add any featured projects that weren't already included
+      featured.forEach(project => {
+        if (!uniqueProjects.has(project.title)) {
+          uniqueProjects.set(project.title, project);
+        }
+      });
+      
+      // Convert map back to array
+      projects = Array.from(uniqueProjects.values());
+    }
     // Filter by category if not "all"
-    if (selectedCategory !== 'all') {
-      projects = projects.filter(project => project.category === selectedCategory)
+    else if (selectedCategory !== 'featured') {
+      projects = projects.filter(project => project.category === selectedCategory);
+    }
+    // Show only featured projects when "Featured" is selected
+    else if (selectedCategory === 'featured') {
+      projects = featured;
     }
     
     // Apply tag filter if one is selected
@@ -65,7 +94,7 @@ export default function Page() {
     
     // Sort by year (newest first)
     return projects.sort((a, b) => b.year - a.year)
-  }, [allProjects, selectedCategory, selectedTag])
+  }, [allProjects, featured, selectedCategory, selectedTag])
 
   // Handle tag selection
   function handleSelectionChange(key) {
@@ -112,6 +141,7 @@ export default function Page() {
           }}
         >
           <Tab key="all" title='All' />
+          <Tab key="featured" title='Featured' />
           <Tab key="school" title='School' />
           <Tab key="personal" title='Personal' />
           <Tab key="other" title='Other' />

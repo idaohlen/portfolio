@@ -7,26 +7,12 @@ import { motion, AnimatePresence } from 'motion/react'
 
 export default function Header() {
   const location = useLocation()
-  const [scrolled, setScrolled] = useState(false)
   const [isNavOpen, setIsNavOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 480)
 
   function toggleNav() {
     setIsNavOpen(!isNavOpen)
   }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Add 'scrolled' class when page is scrolled down
-      const isScrolled = window.scrollY > 10
-      if (isScrolled !== scrolled) setScrolled(isScrolled)
-    };
-    
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [scrolled])
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,7 +22,7 @@ export default function Header() {
       if (!mobile) setIsNavOpen(true)
     }
 
-    handleResize();
+    handleResize()
     
     window.addEventListener('resize', handleResize)
     return () => {
@@ -44,8 +30,11 @@ export default function Header() {
     }
   }, [])
 
+  // Determine when to show blur effect
+  const showBlur = !isMobile || isNavOpen
+
   return (
-    <SiteHeader className={scrolled && isNavOpen ? 'scrolled' : ''}>
+    <SiteHeader className={showBlur ? 'show-blur' : ''}>
       <ToggleMenu onClick={toggleNav}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -137,31 +126,42 @@ const SiteHeader = styled.header`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 20;
   transition: backdrop-filter 0.3s ease;
 
-  &.scrolled {
+
+  &::before {
+    ${tw`h-[250px] xs:h-[120px]`};
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    mask-image: linear-gradient(to bottom, 
+      rgba(0, 0, 0, 1) 0%, 
+      rgba(0, 0, 0, 1) 40%, 
+      rgba(0, 0, 0, .9) 80%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    -webkit-mask-image: linear-gradient(to bottom, 
+      rgba(0, 0, 0, 1) 0%, 
+      rgba(0, 0, 0, 1) 40%, 
+      rgba(0, 0, 0, .9) 80%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    z-index: -1;
+    background: linear-gradient(to bottom, #c52f6ebe, transparent);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  &.show-blur {
     &::before {
-      ${tw`h-[250px] xs:h-[120px]`};
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      mask-image: linear-gradient(to bottom, 
-        rgba(0, 0, 0, 1) 0%, 
-        rgba(0, 0, 0, 1) 60%, 
-        rgba(0, 0, 0, 0) 100%
-      );
-      -webkit-mask-image: linear-gradient(to bottom, 
-        rgba(0, 0, 0, 1) 0%, 
-        rgba(0, 0, 0, 1) 60%, 
-        rgba(0, 0, 0, 0) 100%
-      );
-      z-index: -1;
-      background-color: transparent;
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 `
@@ -176,6 +176,7 @@ const Nav = styled.nav`
 
   // Mobile nav styling
   @media (max-width: 479px) {
+    position: absolute;
     opacity: ${props => props.$isOpen ? '1' : '0'};
     pointer-events: ${props => props.$isOpen ? 'auto' : 'none'};
   }
@@ -232,9 +233,13 @@ const ToggleMenu = styled.div`
   right: 1rem;
   display: flex;
   justify-content: flex-end;
+  padding: .2rem;
   margin-bottom: 1rem;
   opacity: .8;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
   transition: all .3s;
+
   ${tw`xs:hidden`};
 
   &:hover {

@@ -1,5 +1,6 @@
 export default [
   {
+    id: '1',
     title: 'skafferimazarin.se',
     year: '2022',
     tagline: 'Design and ongoing administration of a website for a catering business.',

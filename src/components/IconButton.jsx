@@ -1,7 +1,7 @@
 import { Button, Tooltip } from '@heroui/react'
 import { Icon } from '@iconify/react'
 
-export default function Component({ icon, onPress, label, buttonSize = 'sm', iconSize = '2xl', textColor = null, tooltipPos = 'top' }) {
+export default function Component({ icon, onPress, label, buttonSize = 'sm', iconSize = '2xl', textColor = null, bgColor = null, tooltipPos = 'top' }) {
 
   return (
     <Tooltip content={label} color='foreground' showArrow placement={tooltipPos}>
@@ -11,7 +11,10 @@ export default function Component({ icon, onPress, label, buttonSize = 'sm', ico
         radius='sm'
         variant='light'
         onPress={onPress}
-        className={textColor ? `text-${textColor}` : undefined}
+        className={`
+          ${textColor ? `text-${textColor}` : undefined}
+          ${bgColor ? `bg-${bgColor}` : undefined}
+          `}
       >
         <Icon icon={icon} className={`text-${iconSize}`} />
       </Button>

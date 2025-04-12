@@ -1,5 +1,6 @@
 export default [
   {
+    id: '1',
     title: 'Sharksweep',
     year: '2024',
     tagline: 'A fun little attempt at creating my own version of "Minesweep", but I switched out the mines for sharks.',
