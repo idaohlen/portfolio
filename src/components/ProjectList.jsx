@@ -90,8 +90,8 @@ export default function ProjectList({projects}) {
                 >
                   <CardHeader className='absolute'>
                   <div className='absolute right-3 top-3 flex gap-1'>
-                      { project.repoUrl && <IconButton icon='mdi:github' textColor='black' bgColor='white/80' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} /> }
-                      { project.previewUrl && <IconButton icon='material-symbols:search-rounded' textColor='black' bgColor='white/80' label='Preview' onPress={() => handleRedirect(project.previewUrl)} /> }
+                      { project.repoUrl && <StyledIconButton icon='mdi:github' textColor='black' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} /> }
+                      { project.previewUrl && <StyledIconButton icon='material-symbols:search-rounded' textColor='black' label='Preview' onPress={() => handleRedirect(project.previewUrl)} /> }
                     </div>
                   </CardHeader>
                   <Image
@@ -194,6 +194,9 @@ const ProjectFooter = styled(CardFooter)`
   flex-direction: column;
   justify-content: flex-start;
   padding: 1rem;
+`;
+const StyledIconButton = styled(IconButton)`
+  background-color: rgba(255, 255, 255, 0.8);
 `;
 
 const Title = styled.div`

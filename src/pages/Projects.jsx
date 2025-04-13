@@ -129,7 +129,6 @@ export default function Page() {
     <PageTransition>
       <div className='page'>
         <PageTitle title='Projects' icon='ion:code-slash' />
-
         <Tabs
           aria-label='Project categories'
           className='my-4'
@@ -140,28 +139,28 @@ export default function Page() {
             tabContent: 'text-white'
           }}
         >
-          <Tab key="all" title='All' />
-          <Tab key="featured" title='Featured' />
-          <Tab key="school" title='School' />
-          <Tab key="personal" title='Personal' />
-          <Tab key="other" title='Other' />
+          <Tab key='all' title='All' />
+          <Tab key='featured' title='Featured' />
+          <Tab key='school' title='School' />
+          <Tab key='personal' title='Personal' />
+          <Tab key='other' title='Other' />
         </Tabs>
         <Autocomplete
-          className="max-w-xs mb-4"
+          className='max-w-xs mb-4'
           inputValue={inputValue}
           items={availableTags}
-          aria-label="Filter by tag"
-          placeholder="Filter by tag"
+          aria-label='Filter by tag'
+          placeholder='Filter by tag'
           selectedKey={selectedTag}
           onInputChange={handleInputChange}
           onOpenChange={handleOpenChange}
           onSelectionChange={handleSelectionChange}
           isClearable={true}
           classNames={{
-            base: "text-white",
-            label: "text-white",
-            listbox: "bg-zinc-800",
-            popoverContent: "bg-zinc-800"
+            base: 'text-white',
+            label: 'text-white',
+            listbox: 'bg-zinc-800',
+            popoverContent: 'bg-zinc-800'
           }}
         >
           {(tag) => <AutocompleteItem key={tag.key}>{tag.label}</AutocompleteItem>}

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'motion/react'
 import tw from 'twin.macro'
 import styled from 'styled-components'
 import { Icon } from '@iconify/react'
-import { motion, AnimatePresence } from 'motion/react'
 
 export default function Header() {
   const location = useLocation()

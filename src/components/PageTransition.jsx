@@ -6,6 +6,7 @@ export default function PageTransition({ children, ...props }) {
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 100 }}
+      // onExitComplete={() => window.scrollTo(0, 0)}
       transition={{ duration: 0.5 }}
       style={{flex: '1', display: 'flex'}}
       {...props}

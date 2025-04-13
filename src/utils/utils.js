@@ -1,3 +1,6 @@
-export function handleRedirect(url) {
-  window.location.href = url
+export function handleRedirect(url, newWindow = true) {
+  window.open(
+    url,
+    newWindow ? '_blank' : undefined
+  );
 }

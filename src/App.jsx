@@ -15,10 +15,14 @@ export default function App() {
   document.title = config.pageTitle
   const location = useLocation()
 
+  const handleExitComplete = () => {
+    window.scrollTo(0, 0)
+  }
+
   return (
     <>
       <Header />
-      <AnimatePresence mode='wait'>
+      <AnimatePresence mode='wait' onExitComplete={handleExitComplete}>
         <Routes location={location} key={location.pathname}>
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
