@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useFilter } from '@react-aria/i18n'
-import { Tabs, Tab, Autocomplete, AutocompleteItem } from '@heroui/react'
+import { Tabs, Tab, Autocomplete, AutocompleteItem, Select, SelectItem } from '@heroui/react'
 import config from '@/config'
 import ProjectList from '@/components/ProjectList'
 import PageTransition from '@/components/PageTransition'
@@ -18,6 +18,15 @@ export default function Page() {
   const [inputValue, setInputValue] = useState('')
   const [availableTags, setAvailableTags] = useState([])
   const { startsWith } = useFilter({ sensitivity: 'base' })
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 480)
+
+  const categories = [
+    { key: 'all', label: 'All' },
+    { key: 'featured', label: 'Featured' },
+    { key: 'school', label: 'School' },
+    { key: 'personal', label: 'Personal' },
+    { key: 'other', label: 'Other' }
+  ];
 
   const featured = useMemo(() => featuredProjects(6).map(project => ({ ...project, category: 'featured' })), [])
 
@@ -69,16 +78,16 @@ export default function Page() {
       // Then add any featured projects that weren't already included
       featured.forEach(project => {
         if (!uniqueProjects.has(project.title)) {
-          uniqueProjects.set(project.title, project);
+          uniqueProjects.set(project.title, project)
         }
       });
       
       // Convert map back to array
-      projects = Array.from(uniqueProjects.values());
+      projects = Array.from(uniqueProjects.values())
     }
     // Filter by category if not "all"
     else if (selectedCategory !== 'featured') {
-      projects = projects.filter(project => project.category === selectedCategory);
+      projects = projects.filter(project => project.category === selectedCategory)
     }
     // Show only featured projects when "Featured" is selected
     else if (selectedCategory === 'featured') {
@@ -95,6 +104,20 @@ export default function Page() {
     // Sort by year (newest first)
     return projects.sort((a, b) => b.year - a.year)
   }, [allProjects, featured, selectedCategory, selectedTag])
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 480
+      setIsMobile(mobile)
+    }
+
+    handleResize()
+    
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   // Handle tag selection
   function handleSelectionChange(key) {
@@ -129,24 +152,47 @@ export default function Page() {
     <PageTransition>
       <div className='page'>
         <PageTitle title='Projects' icon='ion:code-slash' />
-        <Tabs
-          aria-label='Project categories'
-          className='my-4'
-          selectedKey={selectedCategory}
-          onSelectionChange={setSelectedCategory}
-          classNames={{
-            tabList: 'bg-white/20',
-            tabContent: 'text-white'
-          }}
-        >
-          <Tab key='all' title='All' />
-          <Tab key='featured' title='Featured' />
-          <Tab key='school' title='School' />
-          <Tab key='personal' title='Personal' />
-          <Tab key='other' title='Other' />
-        </Tabs>
+        {isMobile ? (
+          // Mobile: Show Select dropdown
+          <Select
+            aria-label="Project categories"
+            className="my-4 w-full sm:max-w-xs"
+            defaultSelectedKeys={[selectedCategory]}
+            onSelectionChange={(key) => {
+              const newKey = typeof key === 'object' ? Array.from(key)[0] : key;
+              setSelectedCategory(newKey);
+            }}
+            classNames={{
+              mainWrapper: "bg-white rounded-xl",
+              trigger: "bg-white/20 text-zinc-800",
+              value: "text-black",
+              popoverContent: "bg-zinc-800"
+            }}
+          >
+            {categories.map(category => (
+              <SelectItem key={category.key}>{category.label}</SelectItem>
+            ))}
+          </Select>
+        ) : (
+          // Desktop: Show Tabs
+          <Tabs
+            aria-label='Project categories'
+            className='my-4'
+            selectedKeys={selectedCategory}
+            onSelectionChange={setSelectedCategory}
+            classNames={{
+              tabList: 'bg-white/20',
+              tabContent: 'text-white'
+            }}
+          >
+            {categories.map(category => (
+              <Tab key={category.key} title={category.label} />
+            ))}
+          </Tabs>
+        )}
+        
         <Autocomplete
-          className='max-w-xs mb-4'
+          className='sm:max-w-xs mb-4'
           inputValue={inputValue}
           items={availableTags}
           aria-label='Filter by tag'

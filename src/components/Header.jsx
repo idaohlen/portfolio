@@ -19,7 +19,7 @@ export default function Header() {
       const mobile = window.innerWidth < 480
       setIsMobile(mobile)
 
-      if (!mobile) setIsNavOpen(true)
+      if (!mobile) setIsNavOpen(false)
     }
 
     handleResize()
@@ -45,11 +45,12 @@ export default function Header() {
             transition={{ duration: 0.2 }}
           >
             <Icon 
-              fontSize="32px" 
+              fontSize="30px" 
               icon={isNavOpen 
                 ? "iconamoon:close-thin" 
                 : "iconamoon:menu-burger-horizontal-thin"
               } 
+              className='p-1'
             />
           </motion.div>
         </AnimatePresence>
@@ -78,7 +79,7 @@ export default function Header() {
           } : { opacity: 1 }}
           transition={{ 
             duration: 0.3, 
-            ease: "easeOut"
+            ease: 'easeOut'
           }}
         >
           { links.map(link => (
@@ -156,6 +157,7 @@ const SiteHeader = styled.header`
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
   }
 
   &.show-blur {
