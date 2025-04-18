@@ -1,11 +1,12 @@
 export default [
   {
-    id: '1',
-    title: 'Sharksweep',
-    year: '2024',
-    tagline: 'A fun little attempt at creating my own version of "Minesweep", but I switched out the mines for sharks.',
-    repoUrl: 'https://github.com/idaohlen/js-sharksweep',
-    previewUrl: 'https://idaohlen.github.io/js-sharksweep/',
+    id: "1",
+    title: "Sharksweep",
+    year: "2024",
+    tagline:
+      'A fun little attempt at creating my own version of "Minesweep", but I switched out the mines for sharks.',
+    repoUrl: "https://github.com/idaohlen/js-sharksweep",
+    previewUrl: "https://idaohlen.github.io/js-sharksweep/",
     description: `
       <p>Looking at a list of smaller games to try and code, <b>Minesweep</b> seemed the most challenging and like a project I could learn a lot from.</p>
 
@@ -13,11 +14,7 @@ export default [
 
       <p>I implemented a difficulty modifier by adding midifiable grid size and shark amount to the game. I noticed some performance and graphical issues when setting the grid size to a bigger number, so I added a limit which I deemed appropriate to reduce the rendering issues.</p>
     `,
-    tags: ['HTML', 'CSS', 'JavaScript'],
-    images: [
-      'sharksweep__00.png',
-      'sharksweep__01.png',
-      'sharksweep__02.png',
-    ]
+    tags: ["HTML", "CSS", "JavaScript"],
+    images: ["sharksweep__00.png", "sharksweep__01.png", "sharksweep__02.png"],
   },
-]
+];

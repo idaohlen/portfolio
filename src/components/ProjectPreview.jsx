@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 import {
   Modal,
   ModalContent,
@@ -7,51 +7,72 @@ import {
   ModalFooter,
   Button,
   Chip,
-  Divider
+  Divider,
 } from "@heroui/react";
-import IconButton from '@/components/IconButton'
-import ImageSlideshow from '@/components/ImageSlideshow'
-import { handleRedirect } from '@/utils/utils'
+import IconButton from "@/components/IconButton";
+import ImageSlideshow from "@/components/ImageSlideshow";
+import { handleRedirect } from "@/utils/utils";
 
-export default function ProjectPreview({project, isOpen, onOpen, onClose}) {
-  if (!isOpen) return null
+export default function ProjectPreview({ project, isOpen, onOpen, onClose }) {
+  if (!isOpen) return null;
 
-    return (
-      <Modal isOpen={isOpen} size='xl' onOpenChange={onOpen} scrollBehavior='inside' hideCloseButton className='text-black'>
-        <ModalContent>
-          <ModalHeader className='flex items-center gap-1'>
-            <div className='mr-auto'>{project.title}</div>
-            { project.repoUrl && <IconButton icon='mdi:github' label='GitHub' onPress={() => handleRedirect(project.repoUrl)} /> }
-            { project.previewUrl && <IconButton icon='material-symbols:search-rounded' label='Preview' onPress={() => handleRedirect(project.previewUrl)} /> }
-          </ModalHeader>
-          <ModalBody>
-            <Text>
-              <p className='font-semibold'>{project.tagline}</p>
+  return (
+    <Modal
+      isOpen={isOpen}
+      size="xl"
+      onOpenChange={onOpen}
+      scrollBehavior="inside"
+      hideCloseButton
+      className="text-black"
+    >
+      <ModalContent>
+        <ModalHeader className="flex items-center gap-1">
+          <div className="mr-auto">{project.title}</div>
+          {project.repoUrl && (
+            <IconButton
+              icon="mdi:github"
+              label="GitHub"
+              onPress={() => handleRedirect(project.repoUrl)}
+            />
+          )}
+          {project.previewUrl && (
+            <IconButton
+              icon="material-symbols:search-rounded"
+              label="Preview"
+              onPress={() => handleRedirect(project.previewUrl)}
+            />
+          )}
+        </ModalHeader>
+        <ModalBody>
+          <Text>
+            <p className="font-semibold">{project.tagline}</p>
 
-              {project.images && project.images.length > 0 && (
-                <ImageSlideshow
-                  images={project.images}
-                  imageFolder='/images/projects/min/'
-                  height={120}
-                />
-              )}
+            {project.images && project.images.length > 0 && (
+              <ImageSlideshow
+                images={project.images}
+                imageFolder="/images/projects/min/"
+                height={120}
+              />
+            )}
 
-              <div className='flex flex-wrap gap-2'>
-                { project.tags.map(tag => <Chip key={tag}>{tag}</Chip>) }
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <Chip key={tag}>{tag}</Chip>
+              ))}
+            </div>
 
-              <Divider className='my-6' />
-              <p dangerouslySetInnerHTML={{ __html: project.description }} />
-            </Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="danger" variant="light" onPress={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    )
+            <Divider className="my-6" />
+            <p dangerouslySetInnerHTML={{ __html: project.description }} />
+          </Text>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" variant="light" onPress={onClose}>
+            Close
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
 }
 
 const Text = styled.div`
@@ -63,7 +84,7 @@ const Text = styled.div`
     margin-top: 0;
   }
   p {
-    margin-block: .5rem;
+    margin-block: 0.5rem;
   }
   ul {
     list-style-type: disc;
@@ -72,8 +93,8 @@ const Text = styled.div`
     margin-block: 1rem;
   }
   li {
-    font-size: .9rem;
+    font-size: 0.9rem;
     padding-left: 0.5rem;
     margin-bottom: 0.25rem;
   }
-`
+`;

@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react'
-import anime from 'animejs/lib/anime.es.js'
+import { useRef, useEffect } from "react";
+import anime from "animejs/lib/anime.es.js";
 
 export default function PageTransition({ children, ...props }) {
-  const containerRef = useRef(null)
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -11,18 +11,14 @@ export default function PageTransition({ children, ...props }) {
         opacity: [0, 1],
         translateY: [15, 0],
         duration: 800,
-        easing: 'easeOutCubic'
-      })
+        easing: "easeOutCubic",
+      });
     }
-  }, [])
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{flex: '1', display: 'flex'}}
-      {...props}
-    >
+    <div ref={containerRef} style={{ flex: "1", display: "flex" }} {...props}>
       {children}
     </div>
-  )
+  );
 }

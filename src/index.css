@@ -3,21 +3,22 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Karla', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Karla", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #11142E;
-  background: linear-gradient(145deg, #11142E, #272751) fixed;
+  background-color: #11142e;
+  background: linear-gradient(145deg, #11142e, #272751) fixed;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
+html,
+body {
   min-height: 100vh;
 }
 
@@ -43,9 +44,9 @@ a {
   font-weight: 500;
   color: white;
   text-decoration: underline;
-  text-decoration-thickness: .5px;
+  text-decoration-thickness: 0.5px;
   text-underline-offset: 4px;
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 a:hover {
@@ -75,8 +76,8 @@ h2 {
 
 @media (prefers-color-scheme: light) {
   :root {
-    background-color: #9434BE;
-    background: linear-gradient(145deg, #EF4C4C, #9434BE) fixed;
+    background-color: #9434be;
+    background: linear-gradient(145deg, #ef4c4c, #9434be) fixed;
   }
 }
 

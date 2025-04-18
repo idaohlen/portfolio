@@ -1,9 +1,9 @@
-import school from './school-work.js';
-import personal from './personal.js';
-import other from './other.js';
+import school from "./school-work.js";
+import personal from "./personal.js";
+import other from "./other.js";
 
 function findById(category, id) {
-  return category.find(project => project.id == id)
+  return category.find((project) => project.id == id);
 }
 
 const projects = [
@@ -12,8 +12,8 @@ const projects = [
   findById(school, 5),
   findById(school, 2),
   findById(personal, 1),
-]
+];
 
 export function featuredProjects(amount = 3) {
-  return projects.slice(0, amount)
+  return projects.slice(0, amount);
 }
