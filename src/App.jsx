@@ -21,17 +21,24 @@ export default function App() {
     window.scrollTo(0, 0)
     
     if (pageContainerRef.current) {
-      anime.timeline({
-        easing: 'easeOutQuad',
-      })
-      .add({
-        targets: pageContainerRef.current,
-        opacity: [0, 1],
-        translateY: [20, 0],
-        duration: 600,
-      });
+      // Set initial styles explicitly
+      if (pageContainerRef.current) {
+        pageContainerRef.current.style.opacity = "0";
+        pageContainerRef.current.style.transform = "translateY(20px)";
+      }
+      
+      // Slightly delay the animation to allow child components to initialize
+      setTimeout(() => {
+        anime({
+          targets: pageContainerRef.current,
+          opacity: [0, 1],
+          translateY: [20, 0],
+          duration: 600,
+          easing: 'easeOutQuad',
+        });
+      }, 10);
     }
-  }, [location.pathname]);
+  }, [location.pathname])
 
   return (
     <>

@@ -8,6 +8,9 @@ import { handleRedirect } from '@/utils/utils'
 
 export default function ProjectList({projects}) {
   const projectRefs = useRef([])
+  const hasAnimatedRef = useRef(false)
+  const [refsReady, setRefsReady] = useState(false)
+  const animationTimeoutRef = useRef(null) 
 
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedProject, setSelectedProject] = useState(null)
@@ -27,20 +30,94 @@ export default function ProjectList({projects}) {
     setCurrentPage(1)
   }, [projects])
 
+  // Reset animation state when projects or pagination changes
   useEffect(() => {
-    projectRefs.current.forEach(ref => {
-      if (ref) ref.style.opacity = 0;
-    });
+    hasAnimatedRef.current = false;
+    setRefsReady(false);
     
-    anime({
-      targets: projectRefs.current,
-      opacity: [0, 1],
-      translateY: [20, 0],
-      easing: 'easeOutCubic',
-      duration: 800,
-      delay: anime.stagger(150)
-    });
-  }, [currentProjects]);
+    // Clear any pending animation timeouts
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current)
+    }
+    
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+    }
+  }, [projects, currentPage])
+
+  // Initialize refs array on projects change
+  useEffect(() => {
+    projectRefs.current = new Array(currentProjects.length).fill(null)
+    hasAnimatedRef.current = false
+    setRefsReady(false);
+  }, [currentProjects.length])
+
+  // Use a separate effect with increased timeout to check when refs are populated
+  useEffect(() => {
+    // Clear any existing timeout
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current)
+    }
+    
+    // Check if all refs are populated after a delay
+    animationTimeoutRef.current = setTimeout(() => {
+      const validRefs = projectRefs.current.filter(ref => ref !== null)
+      
+      // Only set refs ready if we have all the refs and haven't animated yet
+      if (validRefs.length > 0 && !hasAnimatedRef.current) {
+        setRefsReady(true)
+      }
+    }, 100); // Increased timeout for more reliability
+    
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+    };
+  }, [currentProjects, currentProjects.length])
+
+  // Run animation when refs are ready
+  useEffect(() => {
+    if (!refsReady || hasAnimatedRef.current) return
+    
+    const validRefs = projectRefs.current.filter(ref => ref !== null)
+    
+    if (validRefs.length > 0) {
+      // Mark that we're animating to prevent duplicate animations
+      hasAnimatedRef.current = true
+      
+      // Ensure initial state is set
+      validRefs.forEach(ref => {
+        if (ref) {
+          ref.style.opacity = '0'
+          ref.style.transform = 'translateY(20px)'
+        }
+      });
+      
+      // Run animation with a short delay to ensure styles are applied
+      setTimeout(() => {
+        anime({
+          targets: validRefs,
+          opacity: [0, 1],
+          translateY: [20, 0],
+          easing: 'easeOutCubic',
+          duration: 800,
+          delay: anime.stagger(150),
+          complete: function() {
+            // Ensure elements remain visible after animation
+            validRefs.forEach(ref => {
+              if (ref) {
+                ref.style.opacity = '1';
+                ref.style.transform = 'translateY(0)';
+              }
+            });
+          }
+        });
+      }, 50)
+    }
+  }, [refsReady])
 
   useEffect(() => {
     function handleResize() {
@@ -69,7 +146,7 @@ export default function ProjectList({projects}) {
       return content
     }
 
-    const placement = index % 2 === 0 ? 'left-start' : 'right-start';
+    const placement = index % 2 === 0 ? 'left-start' : 'right-start'
 
     return (
       <Tooltip
@@ -92,7 +169,7 @@ export default function ProjectList({projects}) {
             const card = (
               <div
                 ref={el => projectRefs.current[index] = el}
-                style={{ opacity: 0 }}
+                style={{ opacity: 0, transform: 'translateY(20px)' }}
                 onClick={(e) => openPreview(e, project)}
                 key={`project-${project.title}-${index}`}
               >

@@ -14,6 +14,10 @@ export default function Header() {
     setIsNavOpen(!isNavOpen)
   }
 
+  function handleLinkClick() {
+    if (isMobile) setIsNavOpen(false)
+  }
+
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 480
@@ -85,6 +89,7 @@ export default function Header() {
           { links.map(link => (
             <Link
               to={link.path}
+              onClick={handleLinkClick}
               key={link.label}
               className={`flex items-center gap-1 ${location.pathname === link.path ? 'active' : ''}`}
             >

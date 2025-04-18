@@ -49,26 +49,26 @@ export default function Page() {
   const [hasScrolled, setHasScrolled] = useState(false)
   const introWrapperRef = useRef(null)
   const introSectionsRef = useRef([])
+  const hasAnimatedRef = useRef(false)
 
   // Setup intersection observer to detect when intro section is in view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasScrolled) {
-          // When section is in view and user has scrolled, trigger animations
+        if (entries[0].isIntersecting && hasScrolled && !hasAnimatedRef.current) {
           animateIntroSections()
+          hasAnimatedRef.current = true
         }
       },
       { threshold: 0.2 }
     )
     
-    if (introWrapperRef.current) {
-      observer.observe(introWrapperRef.current)
-    }
+    const currentRef = introWrapperRef.current
+    if (currentRef) observer.observe(currentRef)
     
     return () => {
-      if (introWrapperRef.current) {
-        observer.unobserve(introWrapperRef.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [hasScrolled])
@@ -93,9 +93,8 @@ export default function Page() {
       }
     })
     
-    // Create smoother animation timeline
     anime.timeline({
-      easing: 'cubicBezier(0.33, 1, 0.68, 1)', // Use cubic-bezier for smoother motion
+      easing: 'cubicBezier(0.33, 1, 0.68, 1)',
     })
     .add({
       targets: introSectionsRef.current,
