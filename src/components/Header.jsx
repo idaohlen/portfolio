@@ -1,22 +1,95 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import anime from "animejs/lib/anime.es.js";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
+import { getActualHeight } from "../utils/utils";
 
 export default function Header() {
   const location = useLocation();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 480);
+  const navRef = useRef(null);
+  const menuIconRef = useRef(null);
 
   function toggleNav() {
     setIsNavOpen(!isNavOpen);
+
+    anime({
+      targets: menuIconRef.current,
+      scale: [0, 1],
+      duration: 300,
+      easing: "easeOutQuad"
+    });
   }
 
   function handleLinkClick() {
-    if (isMobile) setIsNavOpen(false);
+    if (isMobile) {
+      setIsNavOpen(false);
+      anime({
+        targets: menuIconRef.current,
+        scale: [0, 1],
+        duration: 300,
+        easing: "easeOutQuad"
+      });
+    }
   }
+
+  // Animate the nav menu when it opens/closes
+  useEffect(() => {
+    if (!navRef.current) return;
+    
+    // When opening the menu on mobile
+    if (isNavOpen && isMobile) {
+      navRef.current.style.display = 'flex';
+      
+      // Get the actual height before animation
+      const targetHeight = getActualHeight(navRef.current);
+      
+      // Set initial state for animation
+      anime.set(navRef.current, {
+        opacity: 0,
+        height: 0,
+        overflow: 'hidden'
+      });
+      
+      // Animate to visible state
+      anime({
+        targets: navRef.current,
+        opacity: [0, 1],
+        height: [0, targetHeight],
+        duration: 300,
+        easing: "easeOutQuad",
+        complete: function() {
+          // After animation completes, set height to auto
+          navRef.current.style.height = 'auto';
+          navRef.current.style.overflow = 'visible';
+        }
+      });
+    } 
+    // When closing the menu on mobile
+    else if (!isNavOpen && isMobile && navRef.current.style.display !== 'none') {
+      // Get current height before animating
+      const currentHeight = navRef.current.offsetHeight;
+      
+      // Set fixed height before animation
+      navRef.current.style.height = `${currentHeight}px`;
+      navRef.current.style.overflow = 'hidden';
+      
+      // Animate to hidden state
+      anime({
+        targets: navRef.current,
+        opacity: [1, 0],
+        height: [currentHeight, 0],
+        duration: 300,
+        easing: "easeOutQuad",
+        complete: function() {
+          navRef.current.style.display = 'none';
+        }
+      });
+    }
+  }, [isNavOpen, isMobile]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,79 +107,54 @@ export default function Header() {
     };
   }, []);
 
+  // Close the menu when the route changes
+  useEffect(() => {
+    if (isMobile) {
+      setIsNavOpen(false);
+    }
+  }, [location.pathname, isMobile]);
+
   // Determine when to show blur effect
   const showBlur = !isMobile || isNavOpen;
 
   return (
     <SiteHeader className={showBlur ? "show-blur" : ""}>
       <ToggleMenu onClick={toggleNav}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={isNavOpen ? "close" : "menu"}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Icon
-              fontSize="30px"
-              icon={
-                isNavOpen
-                  ? "iconamoon:close-thin"
-                  : "iconamoon:menu-burger-horizontal-thin"
-              }
-              className="p-1"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div ref={menuIconRef} style={{ transformOrigin: 'center' }}>
+          <Icon
+            fontSize="30px"
+            icon={
+              isNavOpen
+                ? "iconamoon:close-thin"
+                : "iconamoon:menu-burger-horizontal-thin"
+            }
+            className="p-1"
+          />
+        </div>
       </ToggleMenu>
 
-      <AnimatePresence>
-        {(isNavOpen || !isMobile) && (
-          <Nav
-            className="flex-col xs:flex-row"
-            $isOpen={isNavOpen}
-            as={motion.nav}
-            initial={isMobile ? { opacity: 0, height: 0 } : { opacity: 1 }}
-            animate={{
-              opacity: 1,
-              height: "auto",
-              transition: {
-                height: { duration: 0.3 },
-              },
-            }}
-            exit={
-              isMobile
-                ? {
-                    opacity: 0,
-                    height: 0,
-                    transition: {
-                      height: { duration: 0.3 },
-                    },
-                  }
-                : { opacity: 1 }
-            }
-            transition={{
-              duration: 0.3,
-              ease: "easeOut",
-            }}
+      <Nav
+        className="flex-col xs:flex-row"
+        $isOpen={isNavOpen}
+        ref={navRef}
+        style={{ 
+          display: (isNavOpen || !isMobile) ? 'flex' : 'none',
+          opacity: isMobile ? 0 : 1,
+          height: isMobile ? 0 : 'auto'
+        }}
+      >
+        {links.map(link => (
+          <Link
+            to={link.path}
+            onClick={handleLinkClick}
+            key={link.label}
+            className={`flex items-center gap-1 ${location.pathname === link.path ? 'active' : ''}`}
           >
-            {links.map((link) => (
-              <Link
-                to={link.path}
-                onClick={handleLinkClick}
-                key={link.label}
-                className={`flex items-center gap-1 ${
-                  location.pathname === link.path ? "active" : ""
-                }`}
-              >
-                <Icon icon={link.icon} />
-                <div>{link.label}</div>
-              </Link>
-            ))}
-          </Nav>
-        )}
-      </AnimatePresence>
+            <Icon icon={link.icon} />
+            <div>{link.label}</div>
+          </Link>
+        ))}
+      </Nav>
     </SiteHeader>
   );
 }

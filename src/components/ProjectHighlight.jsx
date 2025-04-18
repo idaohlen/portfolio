@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useRef, useEffect } from "react";
+import anime from "animejs/lib/anime.es.js";
 import styled from "styled-components";
 import { Card, CardHeader, Image } from "@heroui/react";
 import { handleRedirect } from "@/utils/utils";
@@ -9,6 +9,7 @@ import IconButton from "@/components/IconButton";
 export default function ProjectHighlight({ projects }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const projectRefs = useRef([]);
 
   function openPreview(e, project) {
     if (!e.target.closest(".link")) {
@@ -22,17 +23,42 @@ export default function ProjectHighlight({ projects }) {
     setSelectedProject(null);
   }
 
+  // Initialize the animation when the component mounts
+  useEffect(() => {
+    // First set initial opacity to 0
+    projectRefs.current.forEach((ref, index) => {
+      if (ref) {
+        ref.style.opacity = "0";
+        ref.style.transform = "translateY(20px)";
+      }
+    });
+
+    // Then animate them in with staggered timing
+    anime({
+      targets: projectRefs.current,
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 600,
+      delay: anime.stagger(150),
+      easing: "easeOutCubic",
+      complete: function() {
+        // Ensure elements remain visible after animation
+        projectRefs.current.forEach(ref => {
+          if (ref) {
+            ref.style.opacity = "1";
+            ref.style.transform = "translateY(0)";
+          }
+        });
+      }
+    });
+  }, [projects.length]); // Only re-run when projects array changes
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {projects.map((project, index) => (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.6,
-            delay: index * 0.15,
-            ease: "easeOut",
-          }}
+        <div
+          ref={el => (projectRefs.current[index] = el)}
+          style={{ opacity: 0 }}
           onClick={(e) => openPreview(e, project)}
           key={`project-${project.title}-${index}`}
         >
@@ -67,7 +93,7 @@ export default function ProjectHighlight({ projects }) {
               src={`/images/projects/min/${project.images[0]}`}
             />
           </ProjectCard>
-        </motion.div>
+        </div>
       ))}
       <ProjectPreview
         isOpen={modalOpen}
