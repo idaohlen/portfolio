@@ -1,17 +1,28 @@
-import { motion } from 'motion/react'
+import { useRef, useEffect } from 'react'
+import anime from 'animejs/lib/anime.es.js'
 
 export default function PageTransition({ children, ...props }) {
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    if (containerRef.current) {
+      anime({
+        targets: containerRef.current,
+        opacity: [0, 1],
+        translateY: [15, 0],
+        duration: 800,
+        easing: 'easeOutCubic'
+      })
+    }
+  }, [])
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 100 }}
-      // onExitComplete={() => window.scrollTo(0, 0)}
-      transition={{ duration: 0.5 }}
+    <div
+      ref={containerRef}
       style={{flex: '1', display: 'flex'}}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }

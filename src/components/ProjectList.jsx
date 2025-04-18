@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { motion } from 'motion/react'
+import anime from 'animejs/lib/anime.es.js'
 import { Chip, Tooltip, Pagination, Image, Card, CardHeader, CardFooter } from '@heroui/react'
 import ProjectPreview from '@/components/ProjectPreview'
 import IconButton from '@/components/IconButton'
 import { handleRedirect } from '@/utils/utils'
 
 export default function ProjectList({projects}) {
+  const projectRefs = useRef([])
+
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedProject, setSelectedProject] = useState(null)
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 960)
@@ -24,6 +26,21 @@ export default function ProjectList({projects}) {
   useEffect(() => {
     setCurrentPage(1)
   }, [projects])
+
+  useEffect(() => {
+    projectRefs.current.forEach(ref => {
+      if (ref) ref.style.opacity = 0;
+    });
+    
+    anime({
+      targets: projectRefs.current,
+      opacity: [0, 1],
+      translateY: [20, 0],
+      easing: 'easeOutCubic',
+      duration: 800,
+      delay: anime.stagger(150)
+    });
+  }, [currentProjects]);
 
   useEffect(() => {
     function handleResize() {
@@ -73,14 +90,9 @@ export default function ProjectList({projects}) {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           {currentProjects.map((project, index) => {
             const card = (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ 
-                  duration: 0.6,
-                  delay: index * 0.15, 
-                  ease: "easeOut"
-                }}
+              <div
+                ref={el => projectRefs.current[index] = el}
+                style={{ opacity: 0 }}
                 onClick={(e) => openPreview(e, project)}
                 key={`project-${project.title}-${index}`}
               >
@@ -111,7 +123,7 @@ export default function ProjectList({projects}) {
                     </div>
                   </ProjectFooter>
                 </ProjectCard>
-              </motion.div>
+              </div>
             );
             
             return wrapWithTooltip(card, project, index);

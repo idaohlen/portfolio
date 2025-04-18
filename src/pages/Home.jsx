@@ -1,8 +1,10 @@
-import { Chip, Button } from '@heroui/react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Chip, Button } from '@heroui/react'
 import { Icon } from '@iconify/react'
 import styled from 'styled-components'
 import tw from 'twin.macro'
+import anime from 'animejs/lib/anime.es.js'
 
 import config from '@/config'
 import { handleRedirect } from '@/utils/utils'
@@ -14,15 +16,101 @@ import ProjectHighlight from '@/components/ProjectHighlight'
 
 import { featuredProjects } from '@/data/projects/featured.js'
 
-export default function Page() {
-  
-  const webDevSkills = [
-    'CSS', 'JavaScript', 'React', 'Vue.js', 'Node.js', 'Express.js'
-  ]
+const webDevSkills = [
+  'CSS', 'JavaScript', 'React', 'Vue.js', 'Node.js', 'Express.js'
+]
 
-  const designSkills = [
-    'Figma', 'Affinity Designer', 'Adobe Photoshop', 'Illustration', 'Graphic Design'
-  ]
+const designSkills = [
+  'Figma', 'Affinity Designer', 'Adobe Photoshop', 'Illustration', 'Graphic Design'
+]
+
+const introSections = [
+  {
+    id: 0,
+    icon: 'mingcute:lightning-line',
+    className: 'pink',
+    text: `I am a passionate web developer with experience in building modern, responsive websites and applications.`
+  },
+  {
+    id: 1,
+    icon: 'mingcute:code-line',
+    className: 'yellow',
+    text: `I specialize in <b>JavaScript</b>, <b>React</b>, and <b>Vue.js</b>, and I enjoy solving challenging design problems and creating intuitive user experiences.`
+  },
+  {
+    id: 2,
+    icon: 'mingcute:paint-brush-ai-line',
+    className: 'blue',
+    text: `In addition to web development, I am also an illustrator and graphic designer, combining my technical and creative skills to deliver unique and engaging projects.`
+  }
+]
+
+export default function Page() {
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const introWrapperRef = useRef(null)
+  const introSectionsRef = useRef([])
+
+  // Setup intersection observer to detect when intro section is in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasScrolled) {
+          // When section is in view and user has scrolled, trigger animations
+          animateIntroSections()
+        }
+      },
+      { threshold: 0.2 }
+    )
+    
+    if (introWrapperRef.current) {
+      observer.observe(introWrapperRef.current)
+    }
+    
+    return () => {
+      if (introWrapperRef.current) {
+        observer.unobserve(introWrapperRef.current)
+      }
+    }
+  }, [hasScrolled])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10 && !hasScrolled) {
+        setHasScrolled(true)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [hasScrolled])
+
+  function animateIntroSections() {
+    // Pre-set initial styles
+    introSectionsRef.current.forEach(el => {
+      if (el) {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(50px)';
+      }
+    })
+    
+    // Create smoother animation timeline
+    anime.timeline({
+      easing: 'cubicBezier(0.33, 1, 0.68, 1)', // Use cubic-bezier for smoother motion
+    })
+    .add({
+      targets: introSectionsRef.current,
+      opacity: [0, 1],
+      translateY: [50, 0],
+      duration: 900,
+      delay: anime.stagger(250),
+    })
+
+    setTimeout(() => {
+      introSectionsRef.current.forEach(el => {
+        if (el) el.classList.add('animation-complete')
+      })
+    }, 1500)
+  }
 
   return (
     <PageTransition>
@@ -48,19 +136,25 @@ export default function Page() {
 
         {/* Intro Section */}
         <IntroWrapper className='w-full flex justify-center'>
-          <div className='max-w-2xl p-8 text-white mb-0 mt-8 flex flex-col gap-4'>
-            <IntroSection className='pink sm:mr-[8rem]'>
-              <Icon icon='mingcute:lightning-line' className='icon text-[6rem] xs:text-[4rem] max-sm:pt-4' />
-              <div className='box'>I am a passionate web developer with experience in building modern, responsive websites and applications.</div>
-            </IntroSection>
-            <IntroSection className='yellow sm:ml-[2rem] sm:mr-[4rem]'>
-              <Icon icon='mingcute:code-line' className='icon text-[6rem] xs:text-[4rem] max-sm:pt-4' />
-              <div className='box'>I specialize in <b>JavaScript</b>, <b>React</b>, and <b>Vue.js</b>, and I enjoy solving challenging design problems and creating intuitive user experiences.</div>
-            </IntroSection>
-            <IntroSection className='blue sm:ml-[5rem]'>
-              <Icon icon='mingcute:paint-brush-ai-line' className='icon text-[6rem] xs:text-[4rem] max-sm:pt-4' />
-              <div className='box'>In addition to web development, I am also an illustrator and graphic designer, combining my technical and creative skills to deliver unique and engaging projects.</div>
-            </IntroSection>
+          <div
+            className='max-w-2xl p-8 text-white mb-0 mt-8 flex flex-col gap-4'
+            ref={introWrapperRef}
+          >
+            <div className='grid grid-cols-1 gap-4 relative'>
+              { introSections.map(section => (
+                <IntroSection
+                  className={section.className}
+                  ref={el => introSectionsRef.current[section.id] = el}
+                  style={{ opacity: 0, transform: 'translateY(50px)' }}
+                  key={`intro-section-${section.id}`}
+                >
+                  <Icon icon={section.icon} className='icon text-[6rem] xs:text-[4rem] max-sm:pt-4' />
+                  <div className='box'>
+                    <div dangerouslySetInnerHTML={{__html: section.text}} />
+                  </div>
+                </IntroSection>
+              ))}
+            </div>
           </div>
         </IntroWrapper>
 
@@ -116,15 +210,19 @@ const IntroSection = styled.div`
   ${tw`
     grid grid-cols-1 xs:grid-cols-[5rem_1fr] gap-4 xs:gap-2 items-center
   `};
-
+  transform: translateZ(0);
   border: 1px solid transparent;
-  transition: all .3s;
+  will-change: transform, opacity;
 
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.365);
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    scale: 1.1;
+  &.animation-complete {
+    transition: all 0.3s;
+    
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.365);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      transform: scale(1.1);
+    }
   }
   
   .box {
