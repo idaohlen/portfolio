@@ -20,6 +20,7 @@ export default function ProjectList({ projects }) {
   const [refsReady, setRefsReady] = useState(false);
   const animationTimeoutRef = useRef(null);
 
+  // Modal
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 960);
