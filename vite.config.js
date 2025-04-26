@@ -12,4 +12,14 @@ export default defineConfig({
       "@": path.resolve(path.dirname(new URL(import.meta.url).pathname), "src"),
     },
   },
+  build: {
+    // Reduce code splitting
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+    sourcemap: true,
+    minify: 'esbuild',
+  },
 });

@@ -7,14 +7,20 @@
   # Force browser to not use caching
   CACHE_CONTROL = "public, max-age=0, must-revalidate"
 
-# Performance optimization - removes code splitting
+# Disable JS processing to avoid bundling issues
 [build.processing]
-  skip_processing = false
+  skip_processing = true
 
+# If skip_processing is not enough, try controlling specific options
 [build.processing.js]
-  bundle = true
-  minify = true
+  bundle = false
+  minify = false
 
 [build.processing.css]
-  bundle = true
-  minify = true
+  minify = false
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
