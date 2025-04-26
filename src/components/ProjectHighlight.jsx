@@ -26,7 +26,7 @@ export default function ProjectHighlight({ projects }) {
   // Initialize the animation when the component mounts
   useEffect(() => {
     // First set initial opacity to 0
-    projectRefs.current.forEach((ref, index) => {
+    projectRefs.current.forEach((ref) => {
       if (ref) {
         ref.style.opacity = "0";
         ref.style.transform = "translateY(20px)";
