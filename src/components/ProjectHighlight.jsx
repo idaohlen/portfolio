@@ -35,6 +35,9 @@ export default function ProjectHighlight({ projects }) {
         }}
         onClick={(e) => openPreview(e, project)}
         key={`project-${project.title}-${index}`}
+        tabIndex="0"
+        role="button"
+        aria-label={`View details for ${project.title} project`}
       >
           <ProjectCard isFooterBlurred={true} className="bg-none">
             <CardHeader className="absolute bottom-0 w-full justify-center">
@@ -87,9 +90,19 @@ const ProjectCard = styled(Card)`
   outline-offset: -2px;
   transition: all 0.3s;
 
+  *:focus > & {
+    outline: 3px solid #007bff;
+    outline-offset: 2px;
+  }
+
   &:hover {
     cursor: pointer;
     outline: 2px solid white;
     outline-offset: 0px;
+  }
+
+  *:focus:hover > & {
+    outline: 3px solid #007bff;
+    outline-offset: 2px;
   }
 `;

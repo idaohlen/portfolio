@@ -132,7 +132,7 @@ export default function ProjectList({ projects }) {
                   <Title>{project.title}</Title>
                   <div className="text-sm flex-1">{project.tagline}</div>
                   <div className="flex gap-2 mt-3 text-ellipsis overflow-hidden">
-                    {project.tags.map((tag) => (
+                    {(project.featuredTags || project.tags).map((tag) => (
                       <Chip key={tag} size="sm" variant="bordered">
                         {tag}
                       </Chip>

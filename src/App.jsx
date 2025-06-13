@@ -1,4 +1,3 @@
-import { useRef, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -16,13 +15,13 @@ export default function App() {
   document.title = config.pageTitle;
   const location = useLocation();
 
-  // Scroll to top on page change
-  useEffect(() => window.scrollTo(0, 0) , [location.pathname]);
-
   return (
     <>
       <Header />
-      <AnimatePresence mode="wait">
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => window.scrollTo(0, 0)}
+      >
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 40 }}

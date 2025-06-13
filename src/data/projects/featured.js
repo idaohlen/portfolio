@@ -10,6 +10,7 @@ const projects = [
   findById(other, 1),
   findById(school, 3),
   findById(school, 5),
+  findById(school, 7),
   findById(school, 2),
   findById(personal, 1),
 ];

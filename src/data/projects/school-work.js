@@ -1,4 +1,31 @@
 export default [
+    {
+    id: "7",
+    title: "The Players Academy",
+    year: "2025",
+    tagline:
+      `Team project for Chas Academy's annual "Chas Challenge" where we got to work with a client to develop a real project. Winning entry of the "Chas Agency" category.`,
+    // previewUrl: "https://skafferimazarin.se/",
+    description: `
+      <p><a href="https://chasacademy.se" target="_blank">Chas Academy</a> has an annual competition as a part of the educational program where all classes are grouped into teams to develop a project. For 2025 there was a pool of real life projects for the student teams to pick from as an opportunity to work with a real life client. My team, consisting of eight Fullstack JavaScript developers, two UI/UX designers and two DevOps students got to work with the project "The Players Academy", a company offering educational resources to Swedish football clubs.</p>
+      <p>We developed a website from scratch, from designing a database and writing a RESTful API using Node, Express and Prisma ORM to connect to a frontend built using React and HeroUI.</p>
+      <p>The website consists of multiple interfaces for visitors, logged in coaches, administrators, and a superadmin role. The core functionality of the site provides administrators for a football club to acquire educational seats to distribute amongst their coaches so that they get access to courses to further their knowledge as mentors and educators to young football players. Admins can also invite coaches to the site and assign them to teams that'll automatically give them access to courses relevant to the age group of the team.</p>
+      <p>I acted as project manager for the duration of the project, scheduling meetings and providing organization, resources and support for the rest of the team.</p>
+      <p>As we had to work parallel with the UX-designers and did not have finished design mockups available when we began the technical development of the site, I also contributed some early Figma designs to get everything up and running.</p>
+      <p>Our login system was built using OAuth and Passport.js to login through Google. We also worked with a third party API to connect the website to Learnifier, and education platform where the available courses are hosted.</p>
+      <p>My main contributions, aside from being a project lead, was helping to design the database, refining endpoints in the API, developing an API service built on top of React Query, creating various reusable components and implementing a lot of functionality in modals.</p>
+      `,
+    featuredTags: ["TypeScript", "React", "Express.js"],
+    tags: ["HTML", "JavaScript", "TypeScript", "React", "Tailwind", "Node,js", "Express.js", "REST API", "Prisma ORM"],
+    images: [
+      "theplayersacademy__00.jpg",
+      "theplayersacademy__01.png",
+      "theplayersacademy__02.png",
+      "theplayersacademy__03.png",
+      "theplayersacademy__04.png",
+      "theplayersacademy__05.png",
+    ],
+  },
   {
     id: "6",
     title: "Jobchaser",
@@ -20,7 +47,8 @@ export default [
         <li><b>date-fns</b> for natural language date formatting</li>
       </ul>
     `,
-    tags: ["HTML", "CSS", "TypeScript", "React", "Next.js"],
+    featuredTags: ["TypeScript", "React", "Next.js"],
+    tags: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js"],
     images: [
       "jobchaser__00.png",
       "jobchaser__01.png",
@@ -42,7 +70,8 @@ export default [
       <p>This was my first real project working with TypeScript. Todolists aren't always that exciting, so I tried to implement some additional features like adding categories and date filters and create a fun and colorful design.</p>
       <p>The preview link is for a local storage version of the todolist, but it was originally built to sync with a <b>Supabase</b> database and included a user registration and login system. That code is featured in the repo, but as I cannot guarantee the availability of the Supabase database I've converted the todolist into a locally functioning version as well.</p>
       `,
-    tags: ["HTML", "CSS", "TypeScript"],
+    featuredTags: ["HTML", "CSS", "TypeScript"],
+    tags: ["HTML", "CSS", "JavaScript", "TypeScript"],
     images: [
       "todolist-typescript__00.png",
       "todolist-typescript__01.png",

@@ -59,6 +59,7 @@ p {
 }
 
 h1 {
+  font-family: "Host Grotesk", serif;
   font-size: 3.2em;
   font-weight: 600;
   line-height: 1.1;
@@ -67,11 +68,12 @@ h1 {
 }
 
 h2 {
+  font-family: "Host Grotesk", serif;
   padding-top: 1rem;
   margin-bottom: 1rem;
   font-size: 1.4rem;
   font-weight: 600;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 @media (prefers-color-scheme: light) {

@@ -17,20 +17,23 @@ import ProjectHighlight from "@/components/ProjectHighlight";
 import { featuredProjects } from "@/data/projects/featured.js";
 
 const webDevSkills = [
-  "CSS",
-  "JavaScript",
-  "React",
-  "Vue.js",
-  "Node.js",
-  "Express.js",
+  { label: "HTML", icon: "material-icon-theme:html" },
+  { label: "CSS", icon: "material-icon-theme:css" },
+  { label: "JavaScript", icon: "material-icon-theme:javascript" },
+  { label: "TypeScript", icon: "material-icon-theme:typescript" },
+  { label: "React", icon: "material-icon-theme:react" },
+  { label: "Vue", icon: "material-icon-theme:vue" },
+  { label: "Node.js", icon: "material-icon-theme:nodejs" },
+  { label: "Express.js", icon: "mdi:api" },
 ];
 
 const designSkills = [
-  "Figma",
-  "Affinity Designer",
-  "Adobe Photoshop",
-  "Illustration",
-  "Graphic Design",
+  {label: "Figma", icon: "material-icon-theme:figma" },
+  {label: "Affinity Designer", icon: "vscode-icons:file-type-affinitydesigner" },
+  {label: "Affinity Publisher", icon: "vscode-icons:file-type-affinitypulisher" },
+  {label: "Adobe Photoshop", icon: "devicon:photoshop" },
+  {label: "Illustration", icon: "emojione:artist-palette" },
+  {label: "Graphic Design", icon: "emojione:desktop-computer" },
 ];
 
 const introSections = [
@@ -172,31 +175,33 @@ export default function Page() {
         <Divider />
 
         {/* Skills Overview */}
-        <div className="max-w-lg w-full px-4">
-          <h2 className="text-xl text-white font-bold mb-4 text-center">
+        <div className="max-w-xl w-full px-4">
+          <h2 className="text-3xl mb-8 text-center">
             Skills Overview
           </h2>
           <div className="flex flex-wrap gap-2 justify-center mb-6">
             {webDevSkills.map((skill) => (
               <Chip
-                key={skill}
+                key={skill.label}
                 variant="flat"
-                className="bg-white/20 text-white"
+                className="bg-white/20 text-white text-lg"
                 size="lg"
+                startContent={<Icon icon={skill.icon} className="text-2xl" />}
               >
-                {skill}
+                {skill.label}
               </Chip>
             ))}
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
             {designSkills.map((skill) => (
               <Chip
-                key={skill}
+                key={skill.label}
                 variant="flat"
-                className="bg-white/20 text-white"
+                className="bg-white/20 text-white text-lg"
                 size="lg"
+                startContent={<Icon icon={skill.icon} className="text-2xl" />}
               >
-                {skill}
+                {skill.label}
               </Chip>
             ))}
           </div>
@@ -206,14 +211,15 @@ export default function Page() {
 
         {/* Featured projects */}
         <div className="max-w-[900px] text-center m-4 mt-0 ">
-          <h2 className="mb-6">Featured projects</h2>
+          <h2 className="mb-8 text-3xl">Featured projects</h2>
           <ProjectHighlight projects={featuredProjects(3)} />
-          <Link to="/projects">
+          <Link to="/projects" aria-label="See more projects">
             <Button
               variant="flat"
               size="lg"
               className="mt-6 text-white bg-white/20"
               onPress={(e) => e.preventDefault()}
+              tabIndex="-1"
             >
               See more projects
             </Button>

@@ -14,6 +14,7 @@ export default [
 
       <p>I implemented a difficulty modifier by adding midifiable grid size and shark amount to the game. I noticed some performance and graphical issues when setting the grid size to a bigger number, so I added a limit which I deemed appropriate to reduce the rendering issues.</p>
     `,
+    featuredTags: ["HTML", "CSS", "JavaScript"],
     tags: ["HTML", "CSS", "JavaScript"],
     images: ["sharksweep__00.png", "sharksweep__01.png", "sharksweep__02.png"],
   },
