@@ -4,7 +4,7 @@ import { Chip, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import styled from "styled-components";
 import tw from "twin.macro";
-import anime from "animejs/lib/anime.es.js";
+import { motion } from "framer-motion";
 
 import config from "@/config";
 import { handleRedirect } from "@/utils/utils";
@@ -57,7 +57,7 @@ const introSections = [
 export default function Page() {
   const [hasScrolled, setHasScrolled] = useState(false);
   const introWrapperRef = useRef(null);
-  const introSectionsRef = useRef([]);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const hasAnimatedRef = useRef(false);
 
   // Setup intersection observer to detect when intro section is in view
@@ -69,7 +69,8 @@ export default function Page() {
           hasScrolled &&
           !hasAnimatedRef.current
         ) {
-          animateIntroSections();
+          // Instead of running animation directly, set state to trigger animation
+          setShouldAnimate(true);
           hasAnimatedRef.current = true;
         }
       },
@@ -86,6 +87,7 @@ export default function Page() {
     };
   }, [hasScrolled]);
 
+  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10 && !hasScrolled) {
@@ -96,34 +98,6 @@ export default function Page() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasScrolled]);
-
-  function animateIntroSections() {
-    // Pre-set initial styles
-    introSectionsRef.current.forEach((el) => {
-      if (el) {
-        el.style.opacity = 0;
-        el.style.transform = "translateY(50px)";
-      }
-    });
-
-    anime
-      .timeline({
-        easing: "cubicBezier(0.33, 1, 0.68, 1)",
-      })
-      .add({
-        targets: introSectionsRef.current,
-        opacity: [0, 1],
-        translateY: [50, 0],
-        duration: 900,
-        delay: anime.stagger(250),
-      });
-
-    setTimeout(() => {
-      introSectionsRef.current.forEach((el) => {
-        if (el) el.classList.add("animation-complete");
-      });
-    }, 1500);
-  }
 
   return (
     <PageTransition>
@@ -153,17 +127,34 @@ export default function Page() {
 
         {/* Intro Section */}
         <IntroWrapper className="w-full flex justify-center">
-          <div
+          <IntroContentWrapper
             className="max-w-2xl p-8 text-white mb-0 mt-8 flex flex-col gap-4"
             ref={introWrapperRef}
           >
-            <div className="grid grid-cols-1 gap-4 relative">
-              {introSections.map((section) => (
+            <div className="flex flex-col gap-4 relative">
+              {introSections.map((section, index) => (
                 <IntroSection
-                  className={section.className}
-                  ref={(el) => (introSectionsRef.current[section.id] = el)}
-                  style={{ opacity: 0, transform: "translateY(50px)" }}
+                  className={`intro-section ${section.className}`}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                  transition={{
+                    duration: 0.9,
+                    delay: index * 0.25,
+                    type: "tween"
+                  }}
+                  style={{
+                    transformOrigin: "center", // Add this for better scale animations
+                    position: "relative" // Add this to maintain proper layout during animation
+                  }}
+                  layoutId={`intro-section-${section.id}`}
                   key={`intro-section-${section.id}`}
+                  id={`intro-section-${section.id}`}
+                  onAnimationComplete={() => {
+                    const element = document.getElementById(`intro-section-${section.id}`);
+                    if (element) {
+                      element.classList.add('animation-complete');
+                    }
+                  }}
                 >
                   <Icon
                     icon={section.icon}
@@ -175,7 +166,7 @@ export default function Page() {
                 </IntroSection>
               ))}
             </div>
-          </div>
+          </IntroContentWrapper>
         </IntroWrapper>
 
         <Divider />
@@ -233,11 +224,11 @@ export default function Page() {
   );
 }
 
-const IntroSection = styled.div`
+const IntroSection = styled(motion.div)`
   ${tw`
     grid grid-cols-1 xs:grid-cols-[5rem_1fr] gap-4 xs:gap-2 items-center
   `};
-  transform: translateZ(0);
+  transform: scale(0) translateZ(0);
   border: 1px solid transparent;
   will-change: transform, opacity;
 
@@ -248,7 +239,7 @@ const IntroSection = styled.div`
       border-color: rgba(255, 255, 255, 0.365);
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 8px;
-      transform: scale(1.1);
+      transform: scale(1.1) translateZ(0);
     }
   }
 
@@ -290,4 +281,10 @@ const IntroSection = styled.div`
 
 const IntroWrapper = styled.div`
   /* background: linear-gradient(-20deg, #4b73b7, #6ee1b3); */
+`;
+const IntroContentWrapper = styled.div`
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 `;
