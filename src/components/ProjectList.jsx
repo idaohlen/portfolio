@@ -14,6 +14,36 @@ import ProjectPreview from "@/components/ProjectPreview";
 import IconButton from "@/components/IconButton";
 import { handleRedirect } from "@/utils/utils";
 
+function TooltipImageCycler({ images, projectTitle }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    // Only cycle if there are multiple images
+    if (images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        (prevIndex + 1) % images.length
+      );
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  // Reset to first image when project changes
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [projectTitle]);
+
+  return (
+    <TooltipContent
+      src={`/images/projects/min/${images[currentImageIndex]}`}
+      alt={`${projectTitle} - Image ${currentImageIndex + 1}`}
+      className="object-cover"
+    />
+  );
+}
+
 export default function ProjectList({ projects }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -67,9 +97,9 @@ export default function ProjectList({ projects }) {
       <Tooltip
         key={`${project.title}-${project.date}`}
         content={
-          <TooltipContent
-            src={`/images/projects/min/${project.images[0]}`}
-            className="object-cover"
+          <TooltipImageCycler 
+            images={project.images} 
+            projectTitle={project.title}
           />
         }
         placement={placement}
