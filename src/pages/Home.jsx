@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Chip, Button } from "@heroui/react";
+import { Chip, Button, Avatar } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -30,7 +30,7 @@ const webDevSkills = [
 const designSkills = [
   {label: "Figma", icon: "material-icon-theme:figma" },
   {label: "Affinity Designer", icon: "vscode-icons:file-type-affinitydesigner" },
-  {label: "Affinity Publisher", icon: "vscode-icons:file-type-affinitypulisher" },
+  {label: "Affinity Publisher", icon: "vscode-icons:file-type-affinitypublisher" },
   {label: "Adobe Photoshop", icon: "devicon:photoshop" },
   {label: "Illustration", icon: "emojione:artist-palette" },
   {label: "Graphic Design", icon: "emojione:desktop-computer" },
@@ -39,123 +39,94 @@ const designSkills = [
 const introSections = [
   {
     id: 0,
-    icon: "mingcute:lightning-line",
+    icon: "streamline-pixel:interface-essential-light-bulb",
     className: "pink",
     text: `I am a passionate web developer with experience in building modern, responsive websites and applications.`,
   },
   {
     id: 1,
-    icon: "mingcute:code-line",
+    icon: "streamline-pixel:computer-old-electronics",
     className: "yellow",
     text: `I specialize in <b>JavaScript</b>, <b>React</b>, and <b>Vue.js</b>, and I enjoy solving challenging design problems and creating intuitive user experiences.`,
   },
   {
     id: 2,
-    icon: "mingcute:paint-brush-ai-line",
+    icon: "streamline-pixel:design-color-brush-paint",
     className: "blue",
     text: `In addition to web development, I am also an illustrator and graphic designer, combining my technical and creative skills to deliver unique and engaging projects.`,
   },
 ];
 
 export default function Page() {
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const introWrapperRef = useRef(null);
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-  const hasAnimatedRef = useRef(false);
+  const [animationStates, setAnimationStates] = useState(
+    introSections.map(() => false)
+  );
 
-  // Setup intersection observer to detect when intro section is in view
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (
-          entries[0].isIntersecting &&
-          hasScrolled &&
-          !hasAnimatedRef.current
-        ) {
-          // Instead of running animation directly, set state to trigger animation
-          setShouldAnimate(true);
-          hasAnimatedRef.current = true;
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    const currentRef = introWrapperRef.current;
-    if (currentRef) observer.observe(currentRef);
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasScrolled]);
-
-  // Scroll detection
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10 && !hasScrolled) {
-        setHasScrolled(true);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [hasScrolled]);
+    // Trigger animations in sequence
+    introSections.forEach((_, index) => {
+      setTimeout(() => {
+        setAnimationStates(prev => {
+          const newStates = [...prev];
+          newStates[index] = true;
+          return newStates;
+        });
+      }, 200 + (index * 300));
+    });
+  }, []);
 
   return (
     <PageTransition>
       <div className="flex flex-col items-center justify-center w-full">
-        <div className="mt-[7rem] pb-10">
-          <h1 className="text-5xl text-center font-kumar-one text-white">
-            Ida Öhlén
-          </h1>
-          <p className="text-2xl text-center text-yellow-400">
-            Fullstack Web Developer
-          </p>
-          <div className="flex flex-row justify-center text-4xl">
-            {Object.values(config.contactLinks).map((link) => (
-              <IconButton
-                icon={link.icon}
-                key={link.title}
-                label={link.title}
-                textColor="white"
-                buttonSize="lg"
-                iconSize="4xl"
-                onPress={() => handleRedirect(link.url)}
-                tooltipPos="bottom"
-              />
-            ))}
+        <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mt-[7rem] pb-10">
+          <div>
+            <Avatar isBordered src="/images/profile_img.png" color="warning" className="w-[200px] h-[200px] text-large" />
+          </div>
+          <div>
+            <h1 className="text-5xl text-center font-kumar-one text-white mb-0">
+              Ida Öhlén
+            </h1>
+            <p className="text-2xl text-center text-yellow-400 mt-0">
+              Fullstack Web Developer
+            </p>
+            <div className="flex flex-row justify-center text-4xl">
+              {Object.values(config.contactLinks).map((link) => (
+                <IconButton
+                  icon={link.icon}
+                  key={link.title}
+                  label={link.title}
+                  textColor="white"
+                  buttonSize="lg"
+                  iconSize="4xl"
+                  onPress={() => handleRedirect(link.url)}
+                  tooltipPos="bottom"
+                />
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Intro Section */}
         <IntroWrapper className="w-full flex justify-center">
-          <IntroContentWrapper
-            className="max-w-2xl p-8 text-white mb-0 mt-8 flex flex-col gap-4"
-            ref={introWrapperRef}
-          >
+          <IntroContentWrapper className="max-w-2xl p-8 text-white mb-0 mt-8 flex flex-col gap-4">
             <div className="flex flex-col gap-4 relative">
               {introSections.map((section, index) => (
                 <IntroSection
                   className={`intro-section ${section.className}`}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={animationStates[index] ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
                   transition={{
-                    duration: 0.9,
-                    delay: index * 0.25,
-                    type: "tween"
+                    duration: 1.4,
+                    type: "tween",
                   }}
-                  style={{
-                    transformOrigin: "center", // Add this for better scale animations
-                    position: "relative" // Add this to maintain proper layout during animation
-                  }}
+
                   layoutId={`intro-section-${section.id}`}
                   key={`intro-section-${section.id}`}
                   id={`intro-section-${section.id}`}
                   onAnimationComplete={() => {
                     const element = document.getElementById(`intro-section-${section.id}`);
                     if (element) {
-                      element.classList.add('animation-complete');
+                      element.classList.add("animation-complete");
                     }
                   }}
                 >
@@ -234,7 +205,7 @@ const IntroSection = styled(motion.div)`
   ${tw`
     grid grid-cols-1 xs:grid-cols-[5rem_1fr] gap-4 xs:gap-2 items-center
   `};
-  transform: scale(0) translateZ(0);
+  transform: scale(1) translateZ(0);
   border: 1px solid transparent;
   will-change: transform, opacity;
 
@@ -254,7 +225,7 @@ const IntroSection = styled(motion.div)`
     border-radius: 8px;
     border: 1px solid;
     border-color: transparent;
-    ${tw`text-center xs:text-left sm:text-center`};
+    ${tw`text-left`};
     /* border-color: var(--color-faded); */
     /* background-color: var(--bg); */
   }
